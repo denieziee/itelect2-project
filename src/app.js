@@ -1,6 +1,15 @@
+import { formatDate, validateTask, mergeTaskUpdates } from './utils.js';
+
 console.log('Server starting...');
 
-import { add, greet } from './utils.js';
+// Test formatDate
+console.log(formatDate(new Date()));
 
-console.log(add(2, 3)); // 5
-console.log(greet("Alice")); // Hello, Alice!
+// Test validateTask
+console.log(validateTask({ title: "Finish HW", dueDate: "Tomorrow" })); 
+console.log(validateTask()); 
+
+// Test mergeTaskUpdates
+const initialTask = { title: "Draft", priority: "Low" };
+const updatedTask = mergeTaskUpdates(initialTask, { priority: "High" }, { completed: true });
+console.log(updatedTask);
