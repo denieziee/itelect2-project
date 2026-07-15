@@ -6,11 +6,11 @@ console.log('Server starting...');
 console.log(formatDate(new Date()));
 
 // Test validateTask
-console.log(validateTask({ title: "Finish HW", dueDate: "Tomorrow" })); 
+console.log(validateTask({ title: "Finish HW", dueDate: "2026-07-22" })); 
 console.log(validateTask()); 
 
 // Test mergeTaskUpdates
-const initialTask = { title: "Draft", priority: "Low" };
+const initialTask = { title: "Old", priority: "New" };
 const updatedTask = mergeTaskUpdates(initialTask, { priority: "High" }, { completed: true });
 console.log(updatedTask);
 
