@@ -13,3 +13,5 @@ console.log(validateTask());
 const initialTask = { title: "Draft", priority: "Low" };
 const updatedTask = mergeTaskUpdates(initialTask, { priority: "High" }, { completed: true });
 console.log(updatedTask);
+
+// there are no errors.
