@@ -72,3 +72,6 @@ function greet(name = "Guest", role = "user") {
 console.log(greet()); // Welcome, Guest! Your role is user.
 console.log(greet("Alice", "admin")); // Welcome, Alice! Your role is admin.
 
+// export
+export const add = (a, b) => a + b;
+export const greet = (name) => `Hello, ${name}!`;
