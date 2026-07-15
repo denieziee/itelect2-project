@@ -24,8 +24,7 @@ const add = (a, b) => a + b;
 var greeting = "Hello, " + name + "! You are " + age + " years old.";
 
 // ES6 - template literals
-const greeting = `Hello, ${name}! You are ${age} years old.`;
-
+    const greeting = `Hello, ${name}! You are ${age} years old.`;
 
 // ------------------------------------------------------------
 // DESTRUCTURING OBJECTS
@@ -36,7 +35,6 @@ const user = { name: 'Alice', email: "alice@example.com", role: "admin" };
 const { name, email, role } = user;
 console.log(name, email, role); 
 
-
 // ------------------------------------------------------------
 // DESTRUCTURING ARRAYS
 // ES5 - accessing array elements
@@ -44,8 +42,7 @@ const scores = [95, 88, 76];
 
 // ES6 - array destructuring
 const [first, second, third] = scores;
-console.log(first, second, third); // 95 88 76
-
+    console.log(first, second, third); // 95 88 76
 
 // ------------------------------------------------------------
 // SPREAD & REST OPERATORS
@@ -64,7 +61,6 @@ console.log(sum(1, 2, 3));      // 6
 console.log(sum(10, 20));       // 30
 console.log(sum(5, 5, 5, 5));   // 20
 console.log(sum());             // 0
-
 
 // ------------------------------------------------------------
 // DEFAULT PARAMETERS
