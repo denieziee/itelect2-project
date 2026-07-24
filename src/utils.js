@@ -20,3 +20,19 @@ export const mergeTaskUpdates = (original, ...updates) => {
         return { ...merged, ...currentUpdate };
     }, { ...original });
 };
+
+// TaskValidationError 
+export class TaskValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "TaskValidationError";
+  }
+}
+
+// createTask
+export function createTask(taskData) {
+  if (!validateTask(taskData)) {
+    throw new TaskValidationError("Invalid task data");
+  }
+  return { id: Date.now(), completed: false, ...taskData };
+}
