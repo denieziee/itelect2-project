@@ -71,3 +71,114 @@ function greet(name = "Guest", role = "user") {
 
 console.log(greet()); Welcome, Guest! Your role is user.
 console.log(greet("Alice", "admin")); Welcome, Alice! Your role is admin.
+
+
+
+
+------------------------------------------------------------
+Callback vs Promises
+
+// Callback style
+function getUser(id, callback) {
+  setTimeout(() => callback({ id, name: "Juan" }), 500);
+}
+
+
+// Promise style
+function getUser(id) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve({ id, name: "Juan" }), 500);
+  });
+}
+
+------------------------------------------------------------
+Promise Chaining (.then / .catch)
+
+getUser(1)
+  .then((user) => {
+    console.log(user.name);
+    return fetchOrders(user.id);
+  })
+  .then((orders) => console.log(orders))
+  .catch((err) => console.error("Failed:", err.message));
+
+------------------------------------------------------------
+async / await
+
+function loadUser(id) {
+  return getUser(id)
+    .then((user) => console.log(user.name))
+    .catch((err) => console.error(err.message));
+}
+
+async function loadUser(id) {
+  try {
+    const user = await getUser(id);
+    console.log(user.name);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+------------------------------------------------------------
+try / catch / finally
+
+async function loadUser(id) {
+  try {
+    const user = await getUser(id);
+    console.log(user.name);
+  } catch (err) {
+    console.error("Error:", err.message);
+  } finally {
+    console.log("Done loading.");
+  }
+}
+
+------------------------------------------------------------
+Custom Error Classes
+
+class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "NotFoundError";
+    this.statusCode = 404;
+  }
+}
+
+------------------------------------------------------------
+Fetch API
+
+async function getPosts() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const posts = await res.json();
+  return posts;
+}
+
+------------------------------------------------------------
+Array Methods for Async Results
+
+const posts = await getPosts();
+const shortTitles = posts
+  .filter((post) => post.title.length < 40)
+  .map((post) => ({ id: post.id, title: post.title }));
+console.log(shortTitles);
+
+------------------------------------------------------------
+Live Refactor: Callback -> async/await
+
+function loadPosts(callback) {
+  fetch("https://jsonplaceholder.typicode.com/posts")
+    .then((res) => res.json())
+    .then((data) => callback(null, data))
+    .catch((err) => callback(err));
+}
+
+async function loadPosts() {
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+}
