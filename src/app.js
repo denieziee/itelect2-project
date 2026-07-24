@@ -1,4 +1,5 @@
-import { formatDate, validateTask, mergeTaskUpdates } from './utils.js';
+import { formatDate, validateTask, mergeTaskUpdates, createTask } from './utils.js';
+import { fetchSampleUsers } from './api.js';
 
 console.log('Server starting...');
 
@@ -14,4 +15,27 @@ const initialTask = { title: "Old", priority: "New" };
 const updatedTask = mergeTaskUpdates(initialTask, { priority: "High" }, { completed: true });
 console.log(updatedTask);
 
-// there are no errors. final...
+// ------------------------------------------------------------
+// GT4 Async Operations
+
+async function main() {
+    try {
+        console.log("Fetching sample users...");
+        const users = await fetchSampleUsers();
+        console.log("Users:", users);
+
+        console.log("Creating new task...");
+        
+        const newTask = createTask({ 
+            title: "Study Async JS", 
+            dueDate: new Date().toLocaleDateString() 
+        }); 
+
+        console.log("Task created:", newTask);
+
+    } catch (err) {
+        console.error("Error:", err.message);
+    }
+}
+
+main();
