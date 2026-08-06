@@ -36,3 +36,9 @@ export function createTask(taskData) {
   }
   return { id: Date.now(), completed: false, ...taskData };
 }
+
+export const mockTasks = [
+  { id: 1, title: "Finish HW", dueDate: "2026-07-22", completed: false },
+  { id: 2, title: "Study Async JS", dueDate: "2026-07-25", completed: false },
+  { id: 3, title: "Push GT4 to GitHub", dueDate: "2026-07-28", completed: true },
+];
