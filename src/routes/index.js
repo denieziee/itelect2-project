@@ -1,39 +1,36 @@
 import express from "express";
-import { tasks } from "../utils.js";
+import { mockTasks } from "../utils.js";
 import { fetchSampleUsers } from "../api.js";
 
 const router = express.Router();
-
-// Cache users variable (fetched once when server starts)
 let cachedUsers = [];
 
-(async () => {
-  try {
-    const rawUsers = await fetchSampleUsers();
-    cachedUsers = rawUsers.map(({ id, name, email }) => ({ id, name, email }));
-  } catch (error) {
-    console.error("Failed to fetch users:", error);
-  }
-})();
+fetchSampleUsers()
+  .then((users) => {
+    cachedUsers = users;
+    console.log(`Cached ${cachedUsers.length} users.`);
+  })
+  .catch((err) => console.error("Failed to cache users:", err.message));
 
-// GET /api/tasks -> Returns all mock tasks
+// GET /api/tasks
 router.get("/tasks", (req, res) => {
-  res.json(tasks);
+  res.json(mockTasks);
 });
 
-// GET /api/tasks/:id -> Returns single task or 404 error
+// GET /api/tasks/:id
 router.get("/tasks/:id", (req, res) => {
-  const taskId = parseInt(req.params.id, 10);
-  const task = tasks.find((t) => t.id === taskId);
+  const task = mockTasks.find((t) => String(t.id) === req.params.id);
 
   if (!task) {
-    return res.status(404).json({ error: "Task not found" });
+    return res
+      .status(404)
+      .json({ error: `Task with id ${req.params.id} not found` });
   }
 
   res.json(task);
 });
 
-// GET /api/users -> Returns cached user list
+// GET /api/users
 router.get("/users", (req, res) => {
   res.json(cachedUsers);
 });
