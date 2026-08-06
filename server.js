@@ -5,7 +5,6 @@ const app = express();
 
 app.use(express.json());
 
-// Mount router under /api prefix
 app.use("/api", router);
 
 const PORT = process.env.PORT || 3000;
