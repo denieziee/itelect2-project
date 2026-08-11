@@ -1,5 +1,5 @@
 import express from "express";
-import { mockTasks } from "../utils.js";
+import { validateTask, mergeTaskUpdate, mockTasks } from "../utils.js";
 import { fetchSampleUsers } from "../api.js";
 
 const router = express.Router();
@@ -28,6 +28,44 @@ router.get("/tasks/:id", (req, res) => {
   }
 
   res.json(task);
+});
+
+// POST /api/tasks
+router.post("/tasks", (req, res, next) => {
+  if (!validateTask(req.body)) {
+    const err = new Error("title and dueDate required");
+    err.status = 400;
+    return next(err);
+  }
+  const task = { id: Date.now(), completed: false, ...req.body };
+  mockTasks.push(task);
+  res.status(201).json(task);
+});
+
+// PUT /api/tasks/:id
+router.put("/tasks/:id", (req, res, next) => {
+  const id = Number(req.params.id);
+  const index = mockTasks.findIndex((t) => t.id === id);
+  if (index === -1) {
+    const err = new Error("Task not found");
+    err.status = 404;
+    return next(err);
+  }
+  mockTasks[index] = mergeTaskUpdate(mockTasks[index], req.body);
+  res.status(200).json(mockTasks[index]);
+});
+
+// DELETE /api/tasks/:id
+router.delete("/tasks/:id", (req, res, next) => {
+  const id = Number(req.params.id);
+  const index = mockTasks.findIndex((t) => t.id === id);
+  if (index === -1) {
+    const err = new Error("Task not found");
+    err.status = 404;
+    return next(err);
+  }
+  const [removed] = mockTasks.splice(index, 1);
+  res.status(200).json({ message: "Task deleted", task: removed });
 });
 
 // GET /api/users
