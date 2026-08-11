@@ -20,6 +20,7 @@ export const mergeTaskUpdates = (original, ...updates) => {
         return { ...merged, ...currentUpdate };
     }, { ...original });
 };
+export const mergeTaskUpdate = mergeTaskUpdates;
 
 // TaskValidationError 
 export class TaskValidationError extends Error {
