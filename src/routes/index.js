@@ -74,3 +74,9 @@ router.get("/users", (req, res) => {
 });
 
 export default router;
+
+// http://localhost:3000/api/tasks
+
+// http://localhost:3000/api/tasks/1
+
+// http://localhost:3000/api/users
