@@ -1,23 +1,15 @@
 // config/config.cjs -- REPLACE THE WHOLE filter: 
 require('dotenv').config();
+
 module.exports = {
   development: {
-    username: process.env.DB_USERNAME,
+    username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: 'postgres',
+    dialect: 'postgres'
   }
 };
-
-const path = require('path');
-module.exports = {
-'config': path.resolve('config', 'config.cjs'),
-'migrations-path': path.resolve('migrations'),
-'models-path': path.resolve('models'),
-'seeders-path': path.resolve('seeders')
-};
-
 
 // {
 //   "development": {

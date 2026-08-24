@@ -15,6 +15,9 @@ app.use("/api", router);
 
 // Central Error Handling Middleware (must be LAST app.use)
 app.use((err, req, res, next) => {
+  if (err.name === "SequelizeValidationError") {
+    return res.status(400).json({ error: err.errors.map((e) => e.message) });
+  }
   console.error(err.message);
   const status = err.status || 500;
   res.status(status).json({ error: err.message });
@@ -28,3 +31,4 @@ app.listen(PORT, () => {
 });
 
 // GT5: Add Express server with routing
+// GT8: Central error handler now catches Sequelize validation failures
