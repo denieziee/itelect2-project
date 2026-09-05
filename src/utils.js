@@ -6,19 +6,19 @@ export const greet = (name) => `Hello, ${name}!`;
 
 // formatDate(date)
 export const formatDate = (date) => {
-    return `Due: ${date.toLocaleDateString()}`;
+  return `Due: ${date.toLocaleDateString()}`;
 };
 
 // validateTask(task)
 export const validateTask = ({ title, dueDate } = {}) => {
-    return !!(title && dueDate);
+  return !!(title && dueDate);
 };
 
 // mergeTaskUpdates(task, updates)
 export const mergeTaskUpdates = (original, ...updates) => {
-    return updates.reduce((merged, currentUpdate) => {
-        return { ...merged, ...currentUpdate };
-    }, { ...original });
+  return updates.reduce((merged, currentUpdate) => {
+    return { ...merged, ...currentUpdate };
+  }, { ...original });
 };
 export const mergeTaskUpdate = mergeTaskUpdates;
 
@@ -43,3 +43,10 @@ export const mockTasks = [
   { id: 2, title: "Study Async JS", dueDate: "2026-07-25", completed: false },
   { id: 3, title: "Push GT4 to GitHub", dueDate: "2026-07-28", completed: true },
 ];
+
+
+export async function fetchSampleUsers() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  const data = await res.json();
+  return data.map(({ id, name, email }) => ({ id, name, email }));
+}

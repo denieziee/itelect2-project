@@ -1,32 +1,33 @@
-export async function fetchSampleUsers() {
-  try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/users");
-    const users = await res.json();
-    return users.map((user) => ({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    }));
-  } catch (err) {
-    console.error("Error:", err.message);
-    return [];
-  } finally {
-    console.log("Done loading.");
-  }
-}
+import express from "express";
+import { mockTasks, fetchSampleUsers } from "./utils.js";
 
-export function fetchSampleUsersPromise() {
-  return fetch("https://jsonplaceholder.typicode.com/users")
-    .then((res) => res.json())
-    .then((users) =>
-      users.map((user) => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      }))
-    )
-    .catch((err) => {
-      console.error("Error:", err.message);
-      return [];
-    });
-}
+const router = express.Router();
+
+// Cache users once when the server starts
+let cachedUsers = [];
+fetchSampleUsers()
+  .then((users) => {
+    cachedUsers = users;
+  })
+  .catch((err) => console.error("Error caching users:", err));
+
+// GET /api/tasks
+router.get("/tasks", (req, res) => {
+  res.json(mockTasks);
+});
+
+// GET /api/tasks/:id
+router.get("/tasks/:id", (req, res) => {
+  const task = mockTasks.find((t) => t.id === parseInt(req.params.id, 10));
+  if (!task) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+  res.json(task);
+});
+
+// GET /api/users
+router.get("/users", (req, res) => {
+  res.json(cachedUsers);
+});
+
+export default router;
