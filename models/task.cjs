@@ -1,10 +1,9 @@
 'use strict';
-import { Model } from 'sequelize';
+const { Model } = require('sequelize');
 
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     static associate(models) {
-      // GT8: each Task belongs to one User
       Task.belongsTo(models.User, { foreignKey: 'userId' });
     }
   }
