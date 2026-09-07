@@ -1,5 +1,5 @@
 import express from "express";
-import db from "../../models/index.js";
+import db from "../../models/index.cjs";
 
 const { Task, User } = db;
 const router = express.Router();
