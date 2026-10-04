@@ -1,13 +1,18 @@
+const bcrypt = require('bcryptjs');
+
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
     const now = new Date();
+const adminPw = await bcrypt.hash('admin12345', 10);
+const memberPw = await bcrypt.hash('member12345', 10);
 
-    await queryInterface.bulkInsert('Users', [
-      { name: 'Juan Dela Cruz', email: 'juan@itelect2.test', createdAt: now, updatedAt: now },
-      { name: 'Maria Santos', email: 'maria@itelect2.test', createdAt: now, updatedAt: now },
-      { name: 'Pedro Reyes', email: 'pedro@itelect2.test', createdAt: now, updatedAt: now }
-    ]);
+await queryInterface.bulkInsert('Users', [
+  { name: 'Admin', email: 'admin@itelect2.test', password: adminPw, role: 'admin', createdAt: now, updatedAt: now },
+  { name: 'Juan Dela Cruz', email: 'juan@itelect2.test', password: memberPw, role: 'member', createdAt: now, updatedAt: now },
+  { name: 'Maria Santos', email: 'maria@itelect2.test', password: memberPw, role: 'member', createdAt: now, updatedAt: now },
+  { name: 'Pedro Reyes', email: 'pedro@itelect2.test', password: memberPw, role: 'member', createdAt: now, updatedAt: now }
+]);
 
     // Never hard-code userId: 1 -- PostgreSQL owns the id counter.
     const users = await queryInterface.sequelize.query(

@@ -4,14 +4,17 @@ import db from "../../models/index.cjs";
 const { Task, User } = db;
 const router = express.Router();
 
+// Never send the password hash when a User is included inside a Task
+const safeUser = { model: User, attributes: { exclude: ["password"] } };
+
 // GT8: required JOIN query -- every task comes back with its owning user
 router.get("/tasks", async (req, res) => {
-  const tasks = await Task.findAll({ include: User, order: [["id", "ASC"]] });
+  const tasks = await Task.findAll({ include: safeUser, order: [["id", "ASC"]] });
   res.json(tasks);
 });
 
 router.get("/tasks/:id", async (req, res) => {
-  const task = await Task.findByPk(req.params.id, { include: User });
+  const task = await Task.findByPk(req.params.id, { include: safeUser });
   if (!task) {
     return res.status(404).json({ error: "Task not found" });
   }

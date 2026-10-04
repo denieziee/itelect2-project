@@ -6,6 +6,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.Task, { foreignKey: 'userId' });
     }
+
+    // Deletes the hash from every User that leaves the API
+    toJSON() {
+      const values = { ...this.get() };
+      delete values.password;
+      return values;
+    }
   }
   User.init({
     name: {
@@ -16,7 +23,21 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: { notEmpty: { msg: 'email is required' } }
+      unique: true,
+      validate: {
+        notEmpty: { msg: 'email is required' },
+        isEmail: { msg: 'email must look like an email address' }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: { notEmpty: { msg: 'password is required' } }
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'member'
     }
   }, {
     sequelize,
